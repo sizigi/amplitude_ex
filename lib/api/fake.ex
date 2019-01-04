@@ -12,4 +12,5 @@ defmodule Amplitude.API.Fake do
   end
 
   def api_track(_), do: load("/track/response.txt")
+  def api_identify(_), do: load("/identify/response.txt")
 end

@@ -1,18 +1,24 @@
 defmodule Amplitude do
   use Amplitude.API
 
-  @moduledoc """
-  Tools for getting data from the Worldping API
 
-  Each Worldping API query accesses a different URL, not just different query
-  arguments, so for clarity each type of Worldping API call gets its own
-  function
+  @moduledoc """
+  Functions for the Track and Indetify Amplitude APIs
   """
+
+  # param keys for the Identify API minus user_id and user_properties
+  @identify_keys ~w(
+    device_id groups app_version
+    platform os_name os_version device_brand device_manufacturer
+    device_model carrier country region city dma
+    language paying start_version
+  )
+
 
   @doc """
   Track an event with specified properties
 
-      iex> {:ok, response} = Amplitude.track("my_event", "jdoe_123", %{"ip" => "127.0.0.1"}, %{"cohort" => "Test A"})
+      iex> {:ok, response} = Amplitude.track("my_event", "janedoe_123", %{"ip" => "127.0.0.1"}, %{"cohort" => "Test A"})
       ...> response
       "success"
   """
@@ -20,5 +26,20 @@ defmodule Amplitude do
   def track(event_type, user_id, event_props, user_props) do
     %{"event_type" => event_type, "user_id" => user_id, "event_properties" => event_props, "user_properties" => user_props}
     |> api_track
+  end
+
+  @doc """
+  Identify a user with custom user properties and/or Amplitude specified user properties
+
+      iex> {:ok, response} = Amplitude.identify("janedoe_123", %{"gender" => "female", "email": "jdoe_123@example.com"}, %{"country" => "United States"})
+      ...> response
+      "success"
+  """
+  def identify(user_id, user_props, identify_props \\ %{})
+  def identify(user_id, user_props, identify_props) do
+    identify_props
+    |> Map.take(@identify_keys)
+    |> Map.merge(%{"user_id" => user_id, "user_properties" => user_props})
+    |> api_identify
   end
 end
