@@ -2,12 +2,16 @@ defmodule Amplitude.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :amplitude,
-     version: "0.1.0",
-     elixir: "~> 1.3",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :amplitude,
+      version: "0.2.0",
+      elixir: "~> 1.3",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      deps: deps(),
+      description: "Supports the Track and Identiy Amplitude API",
+      package: package()
+    ]
   end
 
   # Configuration for the OTP application
@@ -30,7 +34,18 @@ defmodule Amplitude.Mixfile do
     [
       {:elixir_uuid, "~> 1.2"},
       {:httpoison, "~> 1.5.0"},
-      {:poison, "~> 3.1.0"} 
+      {:poison, "~> 3.1.0"}
     ]
   end
+
+  defp package do
+    [
+      maintainers: ["Ben Yee"],
+      licenses: ["MIT"],
+      links: %{
+        GitHub: "https://github.com/squaretwo/amplitude_ex"
+      }
+    ]
+  end
+
 end

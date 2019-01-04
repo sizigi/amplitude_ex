@@ -23,7 +23,10 @@ use Mix.Config
 if Mix.env == :test do
   config :amplitude, api_host: "test"
 else
+  ## Deprecated
   config :amplitude, api_host: "https://api.amplitude.com/httpapi"
+
+  config :amplitude, api_key: "your_api_key"
 end
 
 # It is also possible to import configuration files, relative to this
