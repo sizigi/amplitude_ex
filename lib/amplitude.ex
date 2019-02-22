@@ -22,10 +22,10 @@ defmodule Amplitude do
       ...> response
       "success"
   """
-  def track(event_type, user_id, event_props \\ %{}, user_props \\ %{})
-  def track(event_type, user_id, event_props, user_props) do
+  def track(event_type, user_id, event_props \\ %{}, user_props \\ %{}, opts \\ [])
+  def track(event_type, user_id, event_props, user_props, opts) do
     %{"event_type" => event_type, "user_id" => user_id, "event_properties" => event_props, "user_properties" => user_props}
-    |> api_track
+    |> api_track(opts)
   end
 
   @doc """
@@ -35,11 +35,11 @@ defmodule Amplitude do
       ...> response
       "success"
   """
-  def identify(user_id, user_props, identify_props \\ %{})
-  def identify(user_id, user_props, identify_props) do
+  def identify(user_id, user_props, identify_props \\ %{}, opts \\ [])
+  def identify(user_id, user_props, identify_props, opts) do
     identify_props
     |> Map.take(@identify_keys)
     |> Map.merge(%{"user_id" => user_id, "user_properties" => user_props})
-    |> api_identify
+    |> api_identify(opts)
   end
 end

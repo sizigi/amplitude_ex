@@ -11,16 +11,18 @@ defmodule Amplitude.API.Real do
 
   defp identify_api_url, do: @identify_api_url
 
-  defp api_key, do: Application.get_env(:amplitude, :api_key)
-
   defp json_header, do: ["Content-Type": "application/json"]
 
-  def api_track(params) do
+  def api_track(params, opts \\ []) do
+    api_key = Keyword.get_lazy(opts, :api_key, fn ->
+      Application.get_env(:amplitude, :api_key)
+    end)
+
     case params |> Poison.encode() do
      {:ok, params} ->
        Task.start(fn() ->
          start()
-         case get(track_api_url(), json_header(), [params: %{api_key: api_key(), event: params}]) do
+         case get(track_api_url(), json_header(), [params: %{api_key: api_key, event: params}]) do
            {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
              Logger.debug "Amplitude Track: #{body}"
            {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
@@ -37,12 +39,16 @@ defmodule Amplitude.API.Real do
    end
  end
 
-  def api_identify(params) do
+  def api_identify(params, opts \\ []) do
+    api_key = Keyword.get_lazy(opts, :api_key, fn ->
+      Application.get_env(:amplitude, :api_key)
+    end)
+
     case params |> Poison.encode() do
      {:ok, params} ->
        Task.start(fn() ->
          start()
-         case get(identify_api_url(), json_header(), [params: %{api_key: api_key(), insert_id: UUID.uuid4(), identification: params}]) do
+         case get(identify_api_url(), json_header(), [params: %{api_key: api_key, insert_id: UUID.uuid4(), identification: params}]) do
            {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
              Logger.debug "Amplitude Track: #{body}"
            {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->

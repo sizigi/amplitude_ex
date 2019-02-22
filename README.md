@@ -4,8 +4,6 @@ An Elixir client for the Amplitude HTTP API
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
-
   1. Add `amplitude` to your list of dependencies in `mix.exs`:
 
   ```elixir
@@ -14,26 +12,12 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   end
   ```
 
-  2. Ensure `amplitude` is started before your application:
-
-  ```elixir
-  def application do
-    [applications: [:amplitude]]
-  end
-  ```
-
-  3. Add an Amplitude API key to your application config file:
-
-  ```elixir
-  config :amplitude, api_key: "<your_api_key>"
-  ```
-
 ## Usage
 
   1. Track events with the `Amplitude.track/4` function:
 
   ```elixir
-  iex> Amplitude.track("LOGIN_SUCCESS", "janedoe_123", %{"ip" => "127.0.0.1"}, %{"cohort" => "Test A"})
+  iex> Amplitude.track("LOGIN_SUCCESS", "janedoe_123", %{"ip" => "127.0.0.1"}, %{"cohort" => "Test A"}, api_key: "<your_api_key>")
   {:ok, "success"}
   ```
 
@@ -43,7 +27,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   2. Identify users with the `Amplitude.identify/3` function:
 
   ```elixir
-  iex> Amplitude.identify("janedoe_123", %{"gender" =>"female"}, %{"country" => "Canada"})
+  iex> Amplitude.identify("janedoe_123", %{"gender" =>"female"}, %{"country" => "Canada"}, api_key: "<your_api_key>")
   {:ok, "success"}
   ```
 
