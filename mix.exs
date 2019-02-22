@@ -6,8 +6,8 @@ defmodule Amplitude.Mixfile do
       app: :amplitude,
       version: "0.3.0",
       elixir: "~> 1.3",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: "Supports the Track and Identiy Amplitude API",
       package: package()
@@ -34,7 +34,8 @@ defmodule Amplitude.Mixfile do
     [
       {:elixir_uuid, ">= 1.2.0"},
       {:httpoison, ">= 1.5.0"},
-      {:poison, ">= 3.1.0"}
+      {:poison, ">= 3.1.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 
@@ -47,5 +48,4 @@ defmodule Amplitude.Mixfile do
       }
     ]
   end
-
 end

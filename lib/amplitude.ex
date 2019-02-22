@@ -1,7 +1,6 @@
 defmodule Amplitude do
   use Amplitude.API
 
-
   @moduledoc """
   Functions for the Track and Indetify Amplitude APIs
   """
@@ -14,7 +13,6 @@ defmodule Amplitude do
     language paying start_version
   )
 
-
   @doc """
   Track an event with specified properties
 
@@ -22,9 +20,17 @@ defmodule Amplitude do
       ...> response
       "success"
   """
+  @spec track(String.t(), String.t(), map(), map(), keyword()) ::
+          {:ok, "success"} | {:error, String.t()}
   def track(event_type, user_id, event_props \\ %{}, user_props \\ %{}, opts \\ [])
+
   def track(event_type, user_id, event_props, user_props, opts) do
-    %{"event_type" => event_type, "user_id" => user_id, "event_properties" => event_props, "user_properties" => user_props}
+    %{
+      "event_type" => event_type,
+      "user_id" => user_id,
+      "event_properties" => event_props,
+      "user_properties" => user_props
+    }
     |> api_track(opts)
   end
 
@@ -35,7 +41,9 @@ defmodule Amplitude do
       ...> response
       "success"
   """
+  @spec track(String.t(), map(), map(), keyword()) :: {:ok, "success"} | {:error, String.t()}
   def identify(user_id, user_props, identify_props \\ %{}, opts \\ [])
+
   def identify(user_id, user_props, identify_props, opts) do
     identify_props
     |> Map.take(@identify_keys)

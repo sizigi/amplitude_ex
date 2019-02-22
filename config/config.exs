@@ -20,7 +20,7 @@ use Mix.Config
 #
 #     config :logger, level: :info
 #
-if Mix.env == :test do
+if Mix.env() == :test do
   config :amplitude, api_host: "test"
 else
   ## Deprecated
