@@ -4,7 +4,7 @@ defmodule Amplitude.Mixfile do
   def project do
     [
       app: :amplitude,
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -32,15 +32,15 @@ defmodule Amplitude.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:elixir_uuid, "~> 1.2"},
-      {:httpoison, "~> 1.5.0"},
-      {:poison, "~> 3.1.0"}
+      {:elixir_uuid, ">= 1.2.0"},
+      {:httpoison, ">= 1.5.0"},
+      {:poison, ">= 3.1.0"}
     ]
   end
 
   defp package do
     [
-      maintainers: ["Ben Yee"],
+      maintainers: ["Ben Yee", "Donald Plummer"],
       licenses: ["MIT"],
       links: %{
         GitHub: "https://github.com/squaretwo/amplitude_ex"
