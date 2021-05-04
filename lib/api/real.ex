@@ -21,30 +21,38 @@ defmodule Amplitude.API.Real do
         Application.get_env(:amplitude, :api_key)
       end)
 
-    case params |> Poison.encode() do
-      {:ok, params} ->
-        Task.start(fn ->
-          start()
+    env_var = Application.get_env(:amplitude, :track_api_url)
 
-          case get(track_api_url(), json_header(), params: %{api_key: api_key, event: params}) do
-            {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-              Logger.debug("Amplitude Track: #{body}")
+    if env_var == "test" or api_key == nil do
+      Logger.debug("Amplitude Track Skipped: test mode (#{env_var}), or nil api_key (#{api_key})")
+      Amplitude.API.Fake.api_track(params, opts)
+    else
 
-            {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
-              Logger.debug("Amplitude Track: #{body}")
+      case params |> Poison.encode() do
+        {:ok, params} ->
+          Task.start(fn ->
+            start()
 
-            {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
-              Logger.debug("Amplitude Track Failed: #{body}")
+            case get(track_api_url(), json_header(), params: %{api_key: api_key, event: params}) do
+              {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+                Logger.debug("Amplitude Track: #{body}")
 
-            {:error, %HTTPoison.Error{reason: reason}} ->
-              Logger.debug("Amplitude Track Failed: #{reason}")
-          end
-        end)
+              {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
+                Logger.debug("Amplitude Track: #{body}")
 
-        {:ok, "success"}
+              {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
+                Logger.debug("Amplitude Track Failed: #{body}")
 
-      {:error, message} ->
-        {:error, "Unable to serialize params to JSON: #{inspect(message)}"}
+              {:error, %HTTPoison.Error{reason: reason}} ->
+                Logger.debug("Amplitude Track Failed: #{reason}")
+            end
+          end)
+
+          {:ok, "success"}
+
+        {:error, message} ->
+          {:error, "Unable to serialize params to JSON: #{inspect(message)}"}
+      end
     end
   end
 
@@ -54,32 +62,40 @@ defmodule Amplitude.API.Real do
         Application.get_env(:amplitude, :api_key)
       end)
 
-    case params |> Poison.encode() do
-      {:ok, params} ->
-        Task.start(fn ->
-          start()
+    env_var = Application.get_env(:amplitude, :identify_api_url)
 
-          case get(identify_api_url(), json_header(),
-                 params: %{api_key: api_key, insert_id: UUID.uuid4(), identification: params}
-               ) do
-            {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-              Logger.debug("Amplitude Track: #{body}")
+    if env_var == "test" or api_key == nil do
+      Logger.debug("Amplitude Track Skipped: test mode (#{env_var}), or nil api_key (#{api_key})")
+      Amplitude.API.Fake.api_identify(params, opts)
+    else
 
-            {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
-              Logger.debug("Amplitude Track: #{body}")
+      case params |> Poison.encode() do
+        {:ok, params} ->
+          Task.start(fn ->
+            start()
 
-            {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
-              Logger.debug("Amplitude Track Failed: #{body}")
+            case get(identify_api_url(), json_header(),
+                  params: %{api_key: api_key, insert_id: UUID.uuid4(), identification: params}
+                ) do
+              {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+                Logger.debug("Amplitude Track: #{body}")
 
-            {:error, %HTTPoison.Error{reason: reason}} ->
-              Logger.debug("Amplitude Track Failed: #{reason}")
-          end
-        end)
+              {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
+                Logger.debug("Amplitude Track: #{body}")
 
-        {:ok, "success"}
+              {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
+                Logger.debug("Amplitude Track Failed: #{body}")
 
-      {:error, message} ->
-        {:error, "Unable to serialize params to JSON: #{inspect(message)}"}
+              {:error, %HTTPoison.Error{reason: reason}} ->
+                Logger.debug("Amplitude Track Failed: #{reason}")
+            end
+          end)
+
+          {:ok, "success"}
+
+        {:error, message} ->
+          {:error, "Unable to serialize params to JSON: #{inspect(message)}"}
+      end
     end
   end
 

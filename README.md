@@ -18,6 +18,12 @@ end
 config :amplitude, api_key: "<your_api_key>"
 ```
 
+3. For tests, set api_host to "test". Note this is a compile time setting
+
+```elixir
+config :amplitude, api_host: "test"
+```
+
 ## Usage
 
 1. Track events with the `Amplitude.track/4` function:
