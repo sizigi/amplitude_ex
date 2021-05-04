@@ -21,7 +21,7 @@ defmodule Amplitude do
       "success"
   """
   @spec track(String.t(), String.t(), map(), map(), keyword()) ::
-          {:ok, "success"} | {:error, String.t()}
+          {:ok, String.t()} | {:error, String.t()}
   def track(event_type, user_id, event_props \\ %{}, user_props \\ %{}, opts \\ [])
 
   def track(event_type, user_id, event_props, user_props, opts) do
@@ -41,7 +41,7 @@ defmodule Amplitude do
       ...> response
       "success"
   """
-  @spec track(String.t(), map(), map(), keyword()) :: {:ok, "success"} | {:error, String.t()}
+  @spec track(String.t(), map(), map(), keyword()) :: {:ok, String.t()} | {:error, String.t()}
   def identify(user_id, user_props, identify_props \\ %{}, opts \\ [])
 
   def identify(user_id, user_props, identify_props, opts) do
