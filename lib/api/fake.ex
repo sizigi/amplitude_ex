@@ -12,6 +12,6 @@ defmodule Amplitude.API.Fake do
          do: Poison.decode(content)
   end
 
-  def api_track(_), do: load("/track/response.txt")
-  def api_identify(_), do: load("/identify/response.txt")
+  def api_track(_, _), do: {:ok, "success"}
+  def api_identify(_, _), do: {:ok, "success"}
 end

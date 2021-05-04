@@ -6,10 +6,12 @@ defmodule Amplitude.API.Real do
   @identify_api_url "https://api.amplitude.com/identify"
 
   defp track_api_url do
-    Application.get_env(:amplitude, :api_host) || @track_api_url
+    Application.get_env(:amplitude, :track_api_url) || @track_api_url
   end
 
-  defp identify_api_url, do: @identify_api_url
+  defp identify_api_url do
+    Application.get_env(:amplitude, :identify_api_url) || @identify_api_url
+  end
 
   defp json_header, do: ["Content-Type": "application/json"]
 
