@@ -18,7 +18,7 @@ defmodule Amplitude.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [extra_applications: [:logger, :uuid, :elixir_uuid]]
   end
 
   # Dependencies can be Hex packages:
