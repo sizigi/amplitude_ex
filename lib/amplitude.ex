@@ -42,10 +42,10 @@ defmodule Amplitude do
       ...> response
       "success"
   """
-  @spec track(String.t(), map(), map(), keyword()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec track(String.t(), map(), map(), map(), keyword()) :: {:ok, String.t()} | {:error, String.t()}
   def identify(user_id, user_props, identify_props \\ %{}, extra_props \\ %{}, opts \\ [])
 
-  def identify(user_id, user_props, identify_props, opts) do
+  def identify(user_id, user_props, identify_props, extra_props, opts) do
     identify_props
     |> Map.take(@identify_keys)
     |> Map.merge(%{"user_id" => user_id, "user_properties" => user_props})
