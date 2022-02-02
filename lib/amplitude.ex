@@ -20,17 +20,18 @@ defmodule Amplitude do
       ...> response
       "success"
   """
-  @spec track(String.t(), String.t(), map(), map(), keyword()) ::
+  @spec track(String.t(), String.t(), map(), map(), map(), keyword()) ::
           {:ok, String.t()} | {:error, String.t()}
-  def track(event_type, user_id, event_props \\ %{}, user_props \\ %{}, opts \\ [])
+  def track(event_type, user_id, event_props \\ %{}, user_props \\ %{}, extra_props \\ %{}, opts \\ [])
 
-  def track(event_type, user_id, event_props, user_props, opts) do
+  def track(event_type, user_id, event_props, user_props, extra_props, opts) do
     %{
       "event_type" => event_type,
       "user_id" => user_id,
       "event_properties" => event_props,
       "user_properties" => user_props
     }
+    |> Map.merge(extra_props)
     |> api_track(opts)
   end
 
@@ -42,12 +43,13 @@ defmodule Amplitude do
       "success"
   """
   @spec track(String.t(), map(), map(), keyword()) :: {:ok, String.t()} | {:error, String.t()}
-  def identify(user_id, user_props, identify_props \\ %{}, opts \\ [])
+  def identify(user_id, user_props, identify_props \\ %{}, extra_props \\ %{}, opts \\ [])
 
   def identify(user_id, user_props, identify_props, opts) do
     identify_props
     |> Map.take(@identify_keys)
     |> Map.merge(%{"user_id" => user_id, "user_properties" => user_props})
+    |> Map.merge(extra_props)
     |> api_identify(opts)
   end
 end
